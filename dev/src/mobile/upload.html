@@ -1,0 +1,71 @@
+<img id="upload" />
+<input type="file" id="identityUpload"/>
+<script type="text/javascript" charset="utf-8" src="/src/mobile/js/zepto.js"></script>
+
+<script>
+oFReader = new FileReader(), 
+rFilter  = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+
+oFReader.onload = function (oFREvent) {
+	document.getElementById("upload").src = oFREvent.target.result;
+};
+$("#identityUpload").change(function(){
+// Check for the various File API support.
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+  	if (document.getElementById("identityUpload").files.length === 0) {
+		return; 
+	}
+ 	var oFile = document.getElementById("identityUpload").files[0];
+  	if (!rFilter.test(oFile.type)) { 
+		alert("请上传选择正确的图片类型."); 
+		return; 
+	}
+ 	oFReader.readAsDataURL(oFile);
+} else {
+    alert('您的微信版本不支持上传图片，请联系客服.');
+}
+});
+</script>
+if (jQuery.os.android && (jQuery.os.version.toString().indexOf('4.4') === 0 || jQuery.os.version.toString() <= '2.1')) {
+	alert('您的手机系统暂不支持传图');
+} else if (jQuery.os.ios && jQuery.os.version.toString() < '6.0') {
+	alert('手机系统不支持传图，请升级到ios6.0以上');
+}
+if (jQuery.os.wx && jQuery.os.wxVersion.toString() < '5.2') {
+	alert('当前微信版本不支持传图，请升级到最新版');
+}
+
+
+
+$("#identityUpload").change(function(){
+		var formData = new FormData();
+		formData.append('imageUrl', $('#identityUpload')[0].files[0]);
+
+		var uploadUrl = '/json.php/Man/UploadImage';
+		req = new XMLHttpRequest();
+		req.addEventListener("progress", progress, false);
+		req.addEventListener("load", complete, false);
+		req.addEventListener("abort", abort, false);
+		req.addEventListener("error", failed, false);
+		req.open("POST", uploadUrl + '?t=' + Date.now());
+		req.send(formData);
+});
+
+var progress = function(e){
+	if (e.target.response) {
+		var result = JSON.parse(e.target.response);
+	}
+}
+
+var complete = function(e){
+	var result = JSON.parse(e.target.response);
+	alert("上传成功");
+}
+
+var failed = function() {
+	alert('网络断开，请稍后重新操作');
+}
+var abort = function() {
+	alert('上传已取消');
+}
+</script>

@@ -1,0 +1,109 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>jsonp</title>
+		<script src="jquery.js">
+		</script>
+		<script>
+			function GetLines( data ){
+				$(".text1").text( data.msg );
+				if( data.success != "true" ){
+					alert('没有该线路数据');
+					return;
+				}
+				$(".text2").empty();
+				for( var i = 0 ; i != data.data.length ; ++i ){
+					var mm = '<p>'  
+						+'开始时间:' + data.data[i].begin_time + "<br/>"
+						+"结束时间："+data.data[i].end_time+ "<br/>"
+						+"开始站："+data.data[i].start_station+ "<br/>"
+						+"结束站："+data.data[i].end_station+ "<br/>"
+						+"路名："+data.data[i].line_name+ "<br/>"
+						+"id：" + data.data[i].id+ "<br/>"
+						+'</p>';
+					$(".text2").append( $(mm) );
+				}
+				if( data.data.length != 0 ){
+					var url = 'http://busi.gpsoo.net/v1/bus/get_subline_inf?mapType=G_NORMAL_MAP'
+						+ '&sid='+data.data[0].id
+						+'&callback=?';
+					$.getJSON(url,GetStations);
+				}
+			}
+			function GetStations( data ){
+				if( data.success != "true" ){
+					alert('没有该线路的详细数据');
+					return;
+				}
+				for( var i = 0 ; i != data.data.stations.length ; ++i ){
+					var mm = '<p>'  
+						+'站名:' + data.data.stations[i].name + "<br/>"
+						+"id"+data.data.stations[i].id+ "<br/>"
+						+'</p>';
+					$(".text3").append( $(mm) );
+				}
+				var url = 'http://busi.gpsoo.net/v1/bus/t_lineisopen?code=860515'
+						+ '&line=' + $('.lineNum').val()
+						+'&callback=?';
+				$.getJSON(url,function( data2 ){
+					if( data2.success != "true" ){
+						alert('获取车辆行走线路失败');
+						return;
+					}
+					var url = 'http://busi.gpsoo.net/v1/bus/get_online_gps?mapType=BAIDU_MAP'
+						+ '&school_id=' + data2.data[0].eid 
+						+'&callback=?';
+					$.getJSON(url,GetBus);
+				});
+			}
+			function GetBus( data ){
+				$(".text4").empty();
+				for( var i = 0 ; i != data.records.length ; ++i ){
+					var mm = '<p>'  
+						+ '车牌号：'+data.records[i][1] + "<br/>"
+						+'当前站：' + data.records[i][17] + "<br/>"
+						+"下一站："+data.records[i][18]+ "<br/>"
+						+'</p>';
+					$(".text4").append( $(mm) );
+				}
+			}
+			function buttonClick(){
+				var lineNum = $('.lineNum').val();
+				var url = 'http://busi.gpsoo.net/v1/bus/get_lines_by_city?type=handset'
+					+'&city_id=860515'
+					+'&line_name='+lineNum
+					+'&callback=?';
+				$.getJSON(url,GetLines);
+			}
+			$(document).ready( function(){
+				 $("div").click( buttonClick );
+			});
+		</script>
+		<style>
+			.button{
+				width:100px;
+				height:50px;
+				line-height:50px;
+				border:1px solid blue;
+				background:yellow;
+				text-align:center;
+			}
+			.title{
+				color:red;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="text" name="lineNum" class="lineNum"/>
+		<div class="button">按下试试</div>
+		<p class="title">执行结果：</p>
+		<p class="text1"></p>
+		<p class="title">路线基础信息：</p>
+		<p class="text2"></p>
+		<p class="title">第一条路线详细信息：</p>
+		<p class="text3"></p>
+		<p class="title">第一条路线车辆信息：</p>
+		<p class="text4"></p>
+	</body>
+</html>

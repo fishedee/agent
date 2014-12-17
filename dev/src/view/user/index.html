@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>用户管理</title>
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="../../assets/js/common.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js"></script>
+</head>
+
+<body class="definewidth m10">
+	<!-- 查询窗口 -->
+	<form id="user-form" class="form-inline">
+		姓名：
+		<input type="text" name="name" class="input-small"/>
+		电话：
+		<input type="text" name="phoneNumber" class="input-small"/>
+		<!--
+		<select name="manType">
+			<option value="NULL">请选择客户类型</option>
+			<option value="1">金牌代理人</option>
+			<option value="2">置业顾问</option>
+		</select>
+		-->
+		<button type="submit" class="btn">查询</button>
+		<button type="button" class="btn btn-info" id="excel">导出Excel</button>
+<!--
+		<a href="view.html" class="btn" style="float:right; margin-right: 20px; margin-top: 5px;">添加用户</a>
+-->
+	</form>
+	<!-- 表格 -->
+	<div class="m10">
+		<div id="table"></div>
+	</div>
+	
+	<div>
+	</div>
+	
+	<!-- 表格绑定 common.js-->
+	<script>
+	$(function(){
+
+		var param = {};
+		param.phoneNumber = _get("phoneNumber");
+		param.name = _get("name");
+		if(_get("manType") && _get("manType") != "NULL"){
+			param.type = _get("manType");
+			$("select[name='manType']").val(param.type);
+		}
+		else {
+			param.type = "";
+		}
+
+		for(var i in param){
+			$("input[name='"+i+"']").val(param[i]);
+
+			if(param[i] == undefined || param[i] == "undefined"){
+				param[i] = "";
+			}
+		}
+
+		$("#excel").click(function(){
+			location.href = "/json.php/BackMan/GetAccountListExcel?phoneNumber="+param.phoneNumber
+				+ "&name=" + param.name + "&type=" + param.type;
+		});
+
+		var fields = {
+		/*
+			userId : {
+				thText : '微信id'
+			},
+		*/
+			userCode: {
+				thText: '代码'
+			},
+			name : {
+				thText : '用户姓名'
+			},
+			phoneNumber : {
+				thText : '手机编号'
+			},
+			/*
+			mail : {
+				thText : '邮箱'
+			},
+			*/
+			bankNumber : {
+				thText : '银行卡号码'
+			},
+			identityNumber : {
+				thText : '身份证号码'
+			},
+			typeName : {
+				thText : '用户类型'
+			},
+			stateName : {
+				thText : '用户状态'
+			},
+			remark: {
+				thText : '工作单位'
+			},
+			createTime : {
+				thText : '创建时间'
+			},
+			modifyTime : {
+				thText : '修改时间'
+			},
+			oper: {
+				thText : '操作'
+			}
+		};
+		bind_table('/json.php/BackMan/GetAccountList', {table_id: 'table', fields: fields, param: param});
+	});
+	</script>
+</body>
+</html>

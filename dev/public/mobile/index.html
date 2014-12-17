@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+<head>
+	<title>万科</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="Author" content="Awayzhou" />
+	<!--
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, target-densityDpi=device-dpi" />
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, target-densityDpi=device-dpi" />
+	-->
+	<meta name="viewport" content="width=320,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="telephone=no, email=no" name="format-detection">
+	<link href="/public/mobile/css/reset.css?1268baff" rel="stylesheet" type="text/css" />
+	<link href="/public/mobile/css/style.css?9dbb524e" rel="stylesheet" type="text/css" />
+	<link href="/public/mobile/css/global.css?c00f4caf" rel="stylesheet" type="text/css" />
+</head>
+
+<script type="text/javascript" charset="utf-8" src="/public/mobile/js/zepto.js?8279eb6a"></script>
+<script type="text/javascript" charset="utf-8" src="/public/mobile/js/util.js?9ee00475"></script>
+<script type="text/javascript" charset="utf-8" src="/public/mobile/js/t.js?e355321f"></script>
+<script>
+$(function(){
+var _userId = _get("userId");
+$.get("/json.php/MiddleMan/CheckMustValidUser", {
+	userId: _userId
+}, function(data){
+	var data = JSON.parse(data);
+	if(data.retCode == "10003"){
+		alert("用户未注册");
+		//location.href = "reg.html?type=1&userId="+_userId;
+	}
+	else if(data.retCode == "10004"){
+		alert("用户未审核");
+		//location.href = "fail.html";
+	}
+	else if(data.retCode == "10005"){
+		alert("无权限访问页面");
+		//location.href = "fail.html?msg=置业顾问无权限访问.";
+	}
+});
+});
+</script>
+</head>
+<body onload="load()">
+<!-- 加载与浮层 -->
+<div id="container" style="padding-bottom: 40px">
+	<div class="footer-nav box-flex" >
+		<a data="#message" class="flex curr"><i class="info"></i>消息</a>
+		<a data="#project" class="flex"><i class="floor"></i>楼盘</a>
+		<a data="#customer" class="flex"><i class="cus"></i>客户</a>
+		<a data="#user" class="flex"><i class="score"></i>业绩</a>
+	</div>	
+
+	<div class="page" id="page-message">
+
+		<div class="box-flex main-nav">
+			<a data="1" href="#" class="curr flex">我的消息</a>
+			<a data="2" href="#" class="flex">系统消息</a>
+		</div>
+		<ul class="mess-list" id="message-list">
+		</ul>
+		<p class="refresh-bar more-info"><a href="">查看更多消息</a></p>
+	</div>
+
+	<div class="page" id="page-project" style="height: 100%;">
+	<iframe id="project_iframe" style="border:none; width: 100%; min-height: 650px; overflow: auto; padding:0;margin:0;"></iframe>
+	</div>
+
+	<div class="page" id="page-customer" style="background: none">
+		<div class="search">
+			<div class="search-con">
+				<label style="display:none; line-height: 32px">请输入搜索内容</label>
+				<input type="tel" id="search_phoneNumber" class="txt" style="background-repeat: no-repeat;" placeHolder="搜索">
+				<input style="display:none; margin-top: 5px" class="reg-next" type="button" value="搜索" />
+			</div>
+		</div>
+<!--
+					<button id="search" class="btn">搜索</button>
+-->
+		<ul class="search-list" id="customer-list">
+		
+		</ul>
+		<p class="more-info refresh-bar"><a href="">查看更多</a></p>
+		<a href="#addcustomer" class="add-customer" title="添加客户"></a>
+	</div>
+
+	<div class="page" id="page-addcustomer">
+	<div class="topbar"><a href="#customer">返回</a>登记客户</div>
+	<ul class="reg-list">
+		<li>
+			<div class="con">
+				<select id="addcustomer-project" >
+					<option value="NULL">请选择楼盘</option>
+				</select>
+			</div>
+		</li>
+		<li>
+			<div class="con">
+			<input type="text" id="addcustomer-name" class="txt" placeholder="客户姓名">
+			</div>
+		</li>
+		<li>
+			<div class="con"><input type="tel" id="addcustomer-phone"class="txt" placeholder="客户电话"></div>
+		</li>
+		<li>
+			<div class="con">
+				<select id="addcustomer-area">
+<!--					<option value="">请选择面积</option>-->
+				</select>
+			</div>
+		</li>
+		<li>
+			<div class="con">
+				<select id="addcustomer-budget">
+<!--					<option value="">请选择预算</option>-->
+				</select>
+			</div>
+		</li>
+
+	</ul>
+	<input type="button" value="登记客户" class="reg-next" id="addcustomer-submit">
+	</div>
+
+
+	<div class="page" id="page-detail">
+		<div class="topbar"><a href="#customer">返回</a>客户详情</div>
+		<div class="detail-t">
+			<span id="detail-name" class="user"></span>
+			<span id="detail-project" class="name"></span>
+		</div>
+
+		<div class="tweet-wrap" style="display: none" id="appeal" >
+			<div class="topbar">
+			<a id="cancel_appeal">取消</a>
+			申诉
+			</div>
+			<a class="btn">发布</a>
+			<textarea class="text-area"></textarea>
+		</div>
+		<div class="detail-bar box-flex">
+			<a id="contact_customer" href="tel:18503082346" class="flex contact">联系客户</a>
+		<!--	
+			<a href="tel:18503082346" class="flex">联系置业顾问</a>
+		-->
+			<a href="javascript:;" class="flex" id="apply">申诉</a>
+		</div>
+		
+		<ul class="detail-list" id="detail-timeline">
+		</ul>
+	</div>
+
+	<div class="page" id="page-user" style="display: none;">
+		<div class="page-wrap" id="page-mine" style="opacity: 1; display: block;">
+			<div class="score-banner">
+				<span class="logo"></span>
+				<div class="profile-nav box-flex">
+					<p class="flex"><span>报备</span><span class="num" id="report">12</span></p>
+					<p class="flex"><span>登记</span><span class="num" id="look">12</span></p>
+					<p class="flex"><span>认购</span><span class="num" id="pledge">5</span></p>
+					<p class="flex"><span>签约</span><span class="num" id="deal">0</span></p>
+					<p class="flex"><span>回款</span><span class="num" id="payready">0</span></p>
+				</div>
+			</div>
+			<ul class="pay-list">
+				<li><span class="t">正在付款</span> <span id="ClientPaying">0</span></li>
+				<li><span class="t">已经付款</span> <span id="ClientHavePay">0</span></li>
+				<li><span class="t">结算佣金</span>￥ <span id="RequestPay">0</span></li>
+				<li><span class="t">已计佣金总额</span>￥ <span id="HavePay">0</span></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<b class="gotop" id="gotop" style="-webkit-backface-visibility: hidden; display: none;">返回顶部</b>
+<script>
+$(function(){
+	$("input, textarea, select").click(function(){
+   		event.stopPropagation();
+		event.preventDefault();
+		return false;
+	});
+	$("input, textarea, select").focus(function(){
+		$(".footer-nav.box-flex").hide();
+   		event.stopPropagation();
+		event.preventDefault();
+		return false;
+	});
+
+	$("input, textarea, select").blur(function(){
+		$(".footer-nav.box-flex").show();
+		event.stopPropagation();
+		event.preventDefault();
+		return false;
+	});
+/*
+*/
+	$(".footer-nav.box-flex a").click(function(){
+		location.href = $(this).attr("data");
+		return false;
+	});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>用户管理</title>
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css?08f22560" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css?d2c30d07" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css?42491707" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css?bff4533c" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css?1bfd5da3" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css?22baa8aa" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css?ae3b1bd7" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js?bb381e2d"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js?390e6b3b"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js?6acc95f5"></script>
+	<script type="text/javascript" src="../../assets/js/common.js?2767e739"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js?bb279840"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js?2248ed63"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js?ecec08f5"></script>
+</head>
+
+<body class="definewidth m10">
+	<!-- 查询窗口 -->
+	<form id="user-form" class="form-inline">
+		<select name="state">
+			<option value="null">请选择状态</option>
+			<option value="1">未确认</option>
+			<option value="2">已确认</option>
+		</select>
+		<button type="submit" class="btn">查询</button>
+<!--
+		<a href="view.html" class="btn" style="float:right; margin-right: 20px; margin-top: 5px;">添加用户</a>
+-->
+	</form>
+	<!-- 表格 -->
+	<div class="m10">
+		<div id="table"></div>
+	</div>
+	
+	<div>
+	</div>
+	
+	<!-- 表格绑定 common.js?2767e739-->
+	<script>
+	$(function(){
+		var param = {};
+		if(_get("state") != "null"){
+			param.state = _get("state");
+			$("select[name='state']").val(param.state);
+		}
+		
+		var fields = {
+			dealAppealId : {
+				thText : '申诉编号'
+			},
+			message : {
+				thText : '申诉内容'
+			},
+			replyMessage : {
+				thText : '回复内容'
+			},
+			stateName : {
+				thText : '申诉状态'
+			},
+			createTime : {
+				thText : '创建时间'
+			},
+			modifyTime : {
+				thText : '修改时间'
+			},
+			oper: {
+				thText : '操作'
+			}
+		};
+		bind_table('/json.php/BackMan/GetDealAppealList', {table_id: 'table', fields: fields, param: param});
+	});
+	</script>
+</body>
+</html>

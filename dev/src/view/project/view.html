@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="../../assets/js/common.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js"></script>
+ 
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+
+<form id="project-form" action="/json.php/BackMan/AddProject" method="post" enctype="multipart/form-data" class="definewidth m20">
+<input type="hidden" name="projectId" />
+<table class="table table-bordered table-hover definewidth m10">
+    <tr>
+        <td class="tableleft">标题</td>
+        <td><input type="text" name="title"/></td>
+    </tr>
+    <tr>
+        <td class="tableleft">库存</td>
+        <td><input type="text" name="stock"/></td>
+    </tr>
+    <tr>
+        <td class="tableleft">详情url</td>
+        <td><input type="text" name="infoUrl"/></td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">描述</td>
+        <td><textarea name="description"></textarea></td>
+    </tr>
+    <tr>
+        <td class="tableleft">缩略图</td>
+        <td><img id="pic" src="/Img/3.jpg" style="height: 100px; display: block;"/><input type="file" name="pictureUrl"/></td>
+    </tr>
+    <tr>
+        <td class="tableleft"></td>
+        <td>
+            <button class="btn btn-primary" type="submit">提交</button>
+			<button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+</body>
+</html>
+<script>
+    $(function () {       
+		$("input[name='buyTime'], input[name='signTime']").datetimepicker({
+			yearOffset:0,
+			lang:'ch',
+		});
+
+		$("#project-form").submit(function(){
+			if($("input[name='title']").val() == ""){
+				alert("标题不能为空");
+				return false;
+			}
+			if($("input[name='stock']").val() == ""){
+				alert("库存不能为空");
+				return false;
+			}
+			if($("input[name='infoUrl']").val() == ""){
+				alert("详情url不能为空");
+				return false;
+			}
+			if($("input[name='pictureUrl']").val() == ""){
+				alert("请选择上传的图片");
+				return false;
+			}
+			if($("input[name='description']").val() == ""){
+				alert("描述不能为空");
+				return false;
+			}
+		});
+
+		var projectId = _get('projectId');
+		if(projectId == null || projectId == ""){
+			
+		}
+		else {
+				var get_url = '/json.php/BackMan/GetProject';
+				$.get(get_url, {projectId: projectId}, function(data){
+					var data = data.data;
+					$("input[name='projectId']").val(data.projectId);
+					$("input[name='title']").val(data.title);
+					$("input[name='infoUrl']").val(data.infoUrl);
+					$("input[name='stock']").val(data.stock);
+					$("textarea[name='description']").val(data.description);
+					$("#pic").attr("src", data.pictureUrl);
+
+					$("#project-form").attr("action", "/json.php/BackMan/ModProject");
+				});
+		}	
+    });
+</script>

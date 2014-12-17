@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="../../assets/js/common.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js"></script>
+
+ 
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+
+<form id="user-form" class="definewidth m20">
+<input type="hidden" name="userId" />
+<table class="table table-bordered table-hover definewidth m10">
+    <tr>
+        <td class="tableleft">姓名</td>
+        <td><input type="text" name="name"/></td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">密码</td>
+        <td><input type="password" name="password"/></td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">邮箱</td>
+        <td><input type="text" name="mail"/></td>
+    </tr>
+     <tr>
+        <td width="10%" class="tableleft">电话</td>
+        <td><input type="text" name="phoneNumber"/></td>
+    </tr>
+     <tr>
+        <td width="10%" class="tableleft">管理员类型</td>
+        <td>
+		<select name="type">
+			<option value="2">普通管理员</option>	
+			<option value="3">项目AE</option>
+			<option value="4">项目财务</option>
+			<option value="7">项目秘书</option>
+			<option value="5">金牌代理人专员</option>
+			<option value="6">金牌代理人秘书</option>
+		</select>
+		</td>
+    </tr>
+    <tr>
+        <td class="tableleft"></td>
+        <td>
+            <button class="btn btn-primary" type="button" id="submit">提交</button>
+			<button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+</body>
+</html>
+<script>
+	var account_url = '/json.php/BackMan/AddAdmin';
+    $(function () {       
+		$("#submit").click(function(){
+			if($("input[name='name']").val() == ""){
+				alert("姓名不能为空");
+				return false;
+			}
+			if($("input[name='password']").val() == ""){
+				alert("密码不能为空");
+				return false;
+			}
+			if($("input[name='phoneNumber']").val() == ""){
+				alert("电话不能为空");
+				return false;
+			}
+			if($("input[name='mail']").val() == ""){
+				alert("邮箱不能为空");
+				return false;
+			}
+
+			var param  = {};
+			param.name = $("input[name='name']").val() 
+			param.pass = $("input[name='password']").val() 
+			param.phoneNumber = $("input[name='phoneNumber']").val() 
+			param.mail = $("input[name='mail']").val() 
+			param.type = $("select[name='type']").val() 
+
+			$.post(account_url, param, function(data){
+				if(data.retCode == 0){
+					alert("操作成功");
+					location.href = "index.html";
+				}
+				else {
+					alert("操作失败,"+data.retMessage);
+				}
+			});
+		});
+
+    });
+</script>

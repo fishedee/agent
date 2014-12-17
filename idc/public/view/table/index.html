@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>jqGrid.Bootstrap</title>
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css?08f22560" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css?d2c30d07" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css?42491707" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css?bff4533c" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css?1bfd5da3" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css?22baa8aa" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css?ae3b1bd7" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js?bb381e2d"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js?390e6b3b"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js?6acc95f5"></script>
+	<script type="text/javascript" src="../../assets/js/common.js?2767e739"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js?bb279840"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js?2248ed63"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js?ecec08f5"></script>
+</head>
+
+<body class="definewidth m10">
+	<!-- 查询窗口 -->
+	<form class="form-inline" action="index.html" method="get">
+		<div class="tab-title cf " style="height: 50px;">
+			<!-- tab 分 -->
+			<ul>
+				<li class="current"><a href="#">全部消息（5/11）</a></li>
+				<li><a href="#">库存断货（0/0）</a></li>
+				<li><a href="#">进货审核通过（0/0）</a></li>
+				<li><a href="#">投诉管理（0/0）</a></li>
+				<li><a href="#">系统消息（0/0）</a></li>
+			</ul>
+		</div>
+		时间：
+		<input type="text" name="time" id="datetimepicker" class="input-small" readonly/>
+		用户名称：
+		<input type="text" name="username" id="username" class="input-small" placeholder="" value="" />
+		<button id="colorbox_btn" type="button" class="btn">弹窗</button>
+		<button id="dialog_btn" type="button" class="btn">对话框</button>
+		<button type="submit" class="btn btn-primary">查询</button>
+		<button type="button" class="btn" id="addnew">新增用户</button>
+		<button type="button" class="btn" id="export">导出Excel</button>
+	</form>
+	<!-- 表格 -->
+	<div class="m10">
+		
+		<div id="table"></div>
+	</div>
+	
+	<div>
+	</div>
+	
+	<!-- 表格绑定 common.js?2767e739-->
+	<script>
+		bind_table('/json.txt', {table_id: 'table'});
+		
+		$("#dialog_btn").click(function(){
+			dialog('<input type="text"><a href="#" class="touch"><i class="icon-caret"></i></a>');
+		});
+		
+		$("#colorbox_btn").click(function(){
+			html_content('<p>hello</p>');
+		});
+		
+		$('#datetimepicker').datetimepicker({
+			yearOffset:0,
+			lang:'ch',
+			timepicker:false,
+			format:'Y-m-d',
+			formatDate:'Y-m-d',
+		});
+	</script>
+</body>
+</html>

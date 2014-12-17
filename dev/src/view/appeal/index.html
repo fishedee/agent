@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>用户管理</title>
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="../../assets/js/common.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js"></script>
+</head>
+
+<body class="definewidth m10">
+	<!-- 查询窗口 -->
+	<form id="user-form" class="form-inline">
+		<select name="state">
+			<option value="NULL">请选择状态</option>
+			<option value="2">已处理</option>
+			<option value="1">未处理</option>
+		</select>
+		<button type="submit" class="btn">查询</button>
+<!--
+		<a href="view.html" class="btn" style="float:right; margin-right: 20px; margin-top: 5px;">添加用户</a>
+-->
+	</form>
+	<!-- 表格 -->
+	<div class="m10">
+		<div id="table"></div>
+	</div>
+	
+	<div>
+	</div>
+	
+	<!-- 表格绑定 common.js-->
+	<script>
+	$(function(){
+		var param = {};
+		if(_get("state")){
+			param.state = _get("state");
+			$("select[name='state']").val(param.state);
+		}
+		
+		var fields = {
+			dealAppealId : {
+				thText : '申诉编号'
+			},
+			message : {
+				thText : '申诉内容'
+			},
+			replyMessage : {
+				thText : '回复内容'
+			},
+			stateName : {
+				thText : '申诉状态'
+			},
+			createTime : {
+				thText : '创建时间'
+			},
+			modifyTime : {
+				thText : '修改时间'
+			},
+			oper: {
+				thText : '操作'
+			}
+		};
+		bind_table('/json.php/BackMan/GetDealAppealList', {table_id: 'table', fields: fields, param: param});
+	});
+	</script>
+</body>
+</html>

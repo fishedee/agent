@@ -1,0 +1,308 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title> <meta name="robots" content="none">
+<meta name="format-detection" content="telephone=no">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=320,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=319.9,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no" media="(device-height: 568px)">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="register.css">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<div id="container" style="padding-bottom: 60px">
+<div id="content" class="content">
+		<form id="login" class="login" method="POST" action="/json.php/Man/RegisterUser" enctype="multipart/form-data">
+			<!-- 普通登录区域 -->
+			<div id="web_login" style="display: block;">
+				<ul id="g_list">
+					<li id="g_u">
+						<div id="del_touch" class="del_touch">
+							<span id="del_u" class="del_u"></span>
+						</div>
+						<input name="name" class="inputstyle" placeholder="请输入姓名">
+					</li>
+					<li id="g_p">
+						<div id="del_touch_p" class="del_touch">
+							<span id="del_p" class="del_u"></span>
+						</div>
+						<input name="phoneNumber" class="inputstyle" placeholder="请输入您的电话号码">
+					</li>
+				</ul>
+<!--
+				<div style="margin-top: 5px;padding:0; display: block" id="">	
+					<input name="mail" style="background: #FFF; width: 100%" class="inputstyle" placeholder="邮箱">
+				</div>
+-->				
+				<div style="margin-top: 5px;padding:0; display: block" id="vcode">	
+					<input name="remark" style="background: #FFF; width: 100%" class="inputstyle" placeholder="工作单位">
+				</div>
+				<div style="margin-top: 5px;padding:0; display: block" id="vcode">	
+					<input name="identityNumber" style="background: #FFF; width: 100%" class="inputstyle" placeholder="身份证号码">
+				</div>
+
+				<div style="margin-top: 5px;padding:0; display: block" id="vcode">					
+					<img style="display:none; width: 280px; " id="identityImg" src="" />
+					<span class="fileinput-button">        
+						<span>上传身份证照片（正面）</span>
+
+						<input id="identity" type="file" >
+						<input type="hidden" name="identityUrl" />
+						<div class="progress progress-striped active" style="display:none" >
+						  <div id="bar" class="bar" ></div>
+						</div>
+					</span>
+				</div>
+<br>
+				<div style="margin-top: 5px;padding:0; display: block" id="vcode">	
+					<input name="checkNumber" style="background: #FFF; width: 48%" class="inputstyle" placeholder="请输入验证码">
+					<div style="font-size: 14px;width: 40%; display: inline; padding: 15px 20px;" id="submit">获取手机验证码</div>
+				</div>
+
+				<div href="javascript:void(0);" id="go">
+				注册	
+				</div>
+			</div>
+			<input id="registerId" name="registerId" type="hidden"/>
+			<input id="userId" name="userId" type="hidden"/>
+			<input id="type" name="type" type="hidden"/>
+		</form>
+		<!--验证码区域-->
+		<div id="vcode">
+			<label id="vcode_tips">
+				点击图片可更换验证码
+			</label>
+			<div id="vcode_area">
+				<img id="vcode_img">
+				<label id="input_tips">
+					请输入图中的字符不区分大小写
+				</label>
+				<input id="vcode_input" name="vcode_input" tabindex="3" ;="" autocomplete="off" autocorrect="off" maxlength="6">
+			</div>
+			<div id="submit">
+				提交验证码
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" charset="utf-8" src="zepto.js"></script>
+<script type="text/javascript" src="upload.js"></script>
+<script type="text/javascript" src="util.js"></script>
+
+<script>
+function _get(paras){ 
+	var url = location.href;  
+	var paraString = url.substring(url.indexOf("?")+1,url.length).split("&");  
+	var paraObj = {}  
+	for (i=0; j=paraString[i]; i++){  
+		paraObj[j.substring(0,j.indexOf("=")).toLowerCase()] = j.substring(j.indexOf("=")+1,j.length);  
+	}  
+	var returnValue = paraObj[paras.toLowerCase()];  
+	if(typeof(returnValue)=="undefined"){  
+		return "";  
+	}else{  
+		return returnValue;  
+	}  
+}
+
+
+var overlay = [];
+$(document).on('ajaxBeforeSend', function(e, xhr, options){
+	//push_overlay("短信发送中...");
+	push_overlay("请稍候...");
+});
+
+$(document).on('ajaxSuccess', function(e, xhr, options){
+	var i = 0;
+	for(i = overlay.length; i > 1; i--){
+		p = overlay[i-1];
+		p.hide();
+	}
+	if(overlay.length > 0){
+		/*
+		var p = overlay.pop();
+		window.setTimeout(function() {
+			p.update({
+				icon: "/public/mobile/img/check.png",
+				text: "短信发送成功"
+			});
+		}, 1e3);
+		window.setTimeout(function() {
+			p.hide();
+		}, 5e2);
+		*/
+	}
+});
+
+$(function(){
+	$("#identity").html5Uploader({
+		name: "imageUrl",
+		onClientProgress: function(data){
+			$(".progress").show();
+			var percentage = data.loaded/data.total*100;
+			$("#bar").css("width", ""+percentage+"%");
+		},
+		onSuccess: function(e, file, data){
+			$("#bar").css("width", "100%");
+			var data = eval("(" + data + ")");
+			$("input[name='identityUrl']").val(data.data);
+			$('#identityImg').attr("src", data.data);
+			$('#identityImg').show();
+
+			setTimeout(function(){
+				$("#bar").css("width", "0");
+				$(".progress").hide();
+			}, 1000);
+
+		},
+		onServerError: function(e, file){
+		},
+		postUrl: "/json.php/Man/UploadImage"
+	});
+/*
+	$("#identity").html5Uploader({
+		name: "imageUrl",
+		onClientProgress: function(data){
+			$(".progress").show();
+			var percentage = data.loaded/data.total*100;
+			$("#bar").css("width", ""+percentage+"%");
+		},
+		onClientError: function(e){
+		},
+		onServerError: function(e){
+		},
+		onClientLoadEnd: function(e){
+		},
+		onSuccess: function(e, file, data){
+			$("#bar").css("width", "100%");
+			var data = JSON.parse(data);
+			$("input[name='identityUrl']").val(data.data);
+			$('#identityImg').attr("src", URL.createObjectURL(file));
+			$('#identityImg').show();
+			setTimeout(function(){
+				$("#bar").css("width", "0");
+				$(".progress").hide();
+			}, 1000);
+		},
+		onServerError: function(e, file){
+			alert(4);
+		},
+		postUrl: "/json.php/Man/UploadImage"
+	});
+	var _userId = _get("userId");
+	$.get("/json.php/MiddleMan/CheckMustValidUser", {
+		userId: _userId
+	}, function(data){
+		var p = overlay.pop();
+		p.hide();
+		//update_overlay('success', '加载完成');
+
+		var data = JSON.parse(data);
+		if(data.retCode == "0"){
+			location.href = "index.html?userId="+_userId;
+		}
+		if(data.retCode == "10003"){
+			location.href = "register.html?userId="+_userId;
+		}
+		else if(data.retCode == "10004"){
+			location.href = "fail.html";
+		}
+		else if(data.retCode == "10005"){
+			location.href = "fail.html?msg=置业顾问无权限访问.";
+		}
+	});
+*/
+
+	$("#submit").click(function(){
+		var userId = _get("userId");
+		var phoneNumber = $("input[name='phoneNumber']").val();
+		
+		if(userId == ""){
+			alert("请重新获取链接");
+			return ;
+		}
+		if(phoneNumber == ""){
+			alert("请输入手机号码");
+			return ;
+		}
+
+		$.post('/json.php/Man/RegisterRequest', {
+			userId: userId, 
+			phoneNumber: phoneNumber 
+		}, function(data){
+			var data = JSON.parse(data);
+			if(data.retCode == 0){
+				update_overlay('success', '短信发送成功')
+				$("#registerId").val(data.registerId);
+				return false;
+			}
+			else {
+				update_overlay('fail' , "发送短信失败" + data.retMessage);
+				return false;
+			}
+		});
+	});
+
+	$("#go").click(function(){
+		var identityUrl = $("input[name='identityUrl']").val();
+		if(identityUrl == ""){
+			if(!confirm("如果未上传照片，需电话确认注册")){
+			//alert("请等待文件上传完成");
+			return ;
+			}
+		}
+
+		var input = {};
+		input.name = $("input[name='name']").val();
+		input.phoneNumber = $("input[name='phoneNumber']").val();
+		//input.mail = $("input[name='mail']").val();
+		input.identityNumber = $("input[name='identityNumber']").val();
+		input.bankNumber = $("input[name='bankNumber']").val();
+		input.remark = $("input[name='remark']").val();
+		input.checkNumber = $("input[name='checkNumber']").val();
+		input.registerId = $("input[name='registerId']").val();
+
+		input.type = _get("type");
+		input.userId = _get("userId");
+
+		if(input.type == ""){
+		input.type = 1;
+		}
+
+		$("#type").val(input.type);
+		$("#userId").val(input.userId);
+
+
+		var tip = {};
+		tip.name = "姓名不能为空";
+		tip.phoneNumber = "手机号码不能为空";
+		//tip.mail = "邮箱不能为空";
+		tip.identityNumber = "身份证号码不能为空";
+		tip.identityUrl = "请上传身份证照片";
+		tip.bankNumber = "请填写银行卡号码";
+		tip.remark = "请填写工作单位信息";
+		tip.checkNumber = "请填写验证码";
+		tip.registerId = "请获取验证码";
+
+		tip.type = "请重新进入此页面";
+		tip.userId = "请重新进入此页面";
+
+		for(var i in input){
+			if(input[i] == ""){
+				alert(tip[i]);
+				return ;
+			}
+		}
+		input.identityUrl = $("input[name='identityUrl']").val();
+
+		document.getElementById("login").submit();
+		push_overlay("正在注册请稍等...");
+	});
+});
+
+</script>
+</body>
+</html>

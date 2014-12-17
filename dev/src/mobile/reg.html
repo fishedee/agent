@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+<head>
+	<title>万科</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="Author" content="jq" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="telephone=no, email=no" name="format-detection">
+	<link href="/public/mobile/css/reset.css" rel="stylesheet" type="text/css" />
+	<link href="/public/mobile/css/global.css" rel="stylesheet" type="text/css" />
+	<link href="/public/mobile/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="page" style="background-color:#e9e9e9;" id="step1">
+	<ul class="reg-list">
+		<li>
+			<div class="con"><input type="text" id="name" class="txt" placeholder="请输入姓名"></div>
+		</li>
+		<li>
+			<div class="con"><input type="text" id="phoneNumber" class="txt" placeholder="请输入您的电话号码"></div>
+		</li>
+		<li>
+			<div class="con"><input type="text" id="remark" class="txt" placeholder="工作单位及部门"></div>
+		</li>
+		<li>
+			<div class="con"><input type="text" id="identityNumber" class="txt" placeholder="身份证号码"></div>
+		</li>
+	</ul>
+	<img class="reg-pic" src="/public/mobile/images/ls_sf.jpg" alt="" id="identityImg">
+	<p style="margin:15px 10px; color: #111; font-size: 12px;">手持身份证正面半身照</p>
+	<input type="file" value="上传身份证照片(正面)" class="reg-upload" id="identity">
+	<input type="button" value="下一步" class="reg-next" id="next">
+	
+</div>
+
+<div class="page" id="step2" style="display: none">
+	<div class="topbar"><a id="back">返回</a>客户注册</div>
+	<p class="reg-tip">验证码已发送至手机号码</p>
+	<div class="reg-txt">
+		<div class="con"><input type="text" id="checkNumber" class="txt" placeholder="请输入验证码"></div>
+	</div>
+	<input type="button" value="完成注册" class="reg-next" id="submit">
+</div>
+
+
+<form id="register" style="display: none" method="POST" action="/json.php/Man/RegisterUser">
+	<input type="hidden" name="name">
+	<input type="hidden" name="checkNumber">
+	<input type="hidden" name="phoneNumber">
+	<input type="hidden" name="identityNumber">
+	<input type="hidden" name="identityUrl" id="identityUrl" />
+	<input type="hidden" name="remark" />
+	<input type="hidden" name="registerId"/>
+	<input type="hidden" name="userId"/>
+	<input type="hidden" name="type" value="1"/>
+</form>
+</body>
+</html>
+
+<script type="text/javascript" charset="utf-8" src="/public/mobile/js/zepto.js"></script>
+<script type="text/javascript" charset="utf-8" src="/public/mobile/js/util.js"></script>
+<script type="text/javascript" src="/public/mobile/js/upload.js"></script>
+<script type="text/javascript" src="/src/mobile/js/global.js"></script>
+<script>
+function page(page_index){
+	$(".page").hide();
+	$("#"+page_index).show();
+}
+
+var _userId = _get("userId");
+var tip = {};
+tip.name = "姓名不能为空";
+tip.checkNumber = "请填写验证码";
+tip.phoneNumber = "手机号码不能为空";
+tip.identityNumber = "身份证号码不能为空";
+tip.identityUrl = "请上传身份证照片";
+tip.remark = "请填写工作单位信息";
+tip.registerId = "请获取验证码";
+tip.userId = "请重新进入此页面";
+$(function(){
+	if(_userId == ""){
+		alert("链接失效");
+		//location.href = "fail.html?msg=链接失效.";
+	}
+	
+	$.get("/json.php/MiddleMan/CheckMustValidUser", {
+		userId: _userId
+	}, function(data){
+		var data = JSON.parse(data);
+		if(data.retCode == "0"){
+			alert("用户已经注册");
+			//location.href = "index.html?userId="+_userId;
+		}
+		else if(data.retCode == "10004"){
+			alert("该用户暂未审核，请耐心等待.");
+			//location.href = "fail.html?msg=该用户暂未审核，请耐心等待.";
+		}
+		else if(data.retCode == "10005"){
+			alert("置业顾问无权限访问.");
+			//location.href = "fail.html?msg=置业顾问无权限访问.";
+		}
+
+		$("input[name='userId']").val(_userId);
+		$("input[name='type']").val(1);
+	});
+
+	$("#identity").click(function(){
+		if ($.os.android && ($.os.version.toString().indexOf('4.4') === 0 || $.os.version.toString() <= '2.1')) {
+			alert('您的手机系统暂不支持传图');
+			return false;
+		} else if ($.os.ios && $.os.version.toString() < '6.0') {
+			alert('手机系统不支持传图，请升级到ios6.0以上');
+			return false;
+		}
+		if ($.os.wx && $.os.wxVersion.toString() < '5.2') {
+			alert('当前微信版本不支持传图，请升级到最新版');
+			return false;
+		}
+	});
+
+	$("#identity").html5Uploader({
+		name: "imageUrl",
+		onClientLoadStart: function(data){
+			push_overlay("上传中..");
+		},
+		onSuccess: function(e, file, data){
+			var data = parse(data);
+			if(data.retCode != 0){
+				update_overlay("fail", "上传失败.");
+				alert(data.retMessage);
+				return ;
+			}
+			$("input[name='identityUrl']").val(data.data);
+			
+			update_overlay("success", "上传完成.");
+			setTimeout(function(){
+				$("#identityImg").attr("src", data.data);
+				//$('#identityImg').attr("src", URL.createObjectURL(file));
+			}, 1000);
+		},
+		onServerError: function(e, file){
+			alert("server_error");
+			alert(e.toString());
+		},
+		postUrl: "/json.php/Man/UploadImage"
+	});
+
+	$("#back").click(function(){
+		page("step1");
+	});
+
+	$("#next").click(function(){
+		var input = $("#step1 input[type='text']");
+		for(var i = 0; i < input.length; i++){
+			var name = input[i].id;
+			if(input[i].value == ""){
+				alert(tip[name]);
+				return ;
+			}
+			$("input[name='"+name+"']").val(input[i].value);
+		}
+
+		var identityUrl = $("input[name='identityUrl']").val();
+		if(identityUrl == ""){
+			if(!confirm("如果未上传照片，需电话确认注册")){
+
+				return ;
+			}
+		}
+		
+		push_overlay("请稍后..");
+		$.post('/json.php/Man/RegisterRequest', {
+			userId: _userId, 
+			identityNumber: $("#identityNumber").val(),
+			phoneNumber: $("#phoneNumber").val() 
+		}, function(data){
+			var data = parse(data);
+			if(data.retCode == 0){
+				update_overlay('success', '短信发送成功')
+				$("input[name='registerId']").val(data.registerId);
+				
+				setTimeout(function(){
+					page("step2");
+				}, 1000);
+				return false;
+			}
+			else {
+				update_overlay('fail' , "注册失败");
+				alert(data.retMessage);
+				//update_overlay('fail' , "发送短信失败," + data.retMessage);
+				return false;
+			}
+		});
+		
+	});
+	
+	$("#submit").click(function(){
+		if($("#checkNumber").val() == ""){
+			alert("请输入短信验证码");
+			return false;
+		}
+
+		$("input[name='checkNumber']").val($("#checkNumber").val());
+
+		var input = $("input[type='hidden']");
+		for(var i = 0; i < input.length; i++){
+			var name = input[i].name;
+			if(input[i].value == "" && input[i].id != "identityUrl"){
+				alert(tip[name]);
+				return ;
+			}
+		}
+
+		push_overlay("正在注册请稍等...");
+		document.getElementById("register").submit();
+	});
+});
+
+</script>
+</body>
+</html>

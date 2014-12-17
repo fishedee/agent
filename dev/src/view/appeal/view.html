@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="../../assets/js/common.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js"></script>
+
+ 
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+
+<form id="user-form" class="definewidth m20">
+<input type="hidden" id="dealAppealId" />
+<table class="table table-bordered table-hover definewidth m10">
+    <tr>
+        <td class="tableleft">客户姓名：</td>
+        <td><label id="dealName"></label></td>
+    </tr>
+    <tr>
+        <td class="tableleft">客户电话：</td>
+        <td><label id="dealPhoneNumber"></label></td>
+    </tr>
+    <tr>
+        <td class="tableleft">项目名称：</td>
+        <td><label id="projectName"></label></td>
+    </tr>
+    <tr>
+        <td class="tableleft">订单状态：</td>
+        <td><label id="stateName"></label></td>
+    </tr>
+    <tr>
+        <td class="tableleft">金牌代理人：</td>
+        <td><label id="middleManName"></label></td>
+    </tr>
+	<!--
+    <tr>
+        <td class="tableleft">置业顾问：</td>
+        <td><label id="adviserManName"></label></td>
+    </tr>
+	-->
+    <tr>
+        <td class="tableleft">价格：</td>
+        <td><label id="price"></label></td>
+    </tr>
+    <tr>
+        <td class="tableleft">申诉内容：</td>
+        <td><label id="message"></label></td>
+    </tr>
+	<tr>
+        <td class="tableleft">回复内容：</td>
+        <td><textarea id="replyMessage"></textarea></td>
+    </tr>
+    <tr>
+        <td class="tableleft"></td>
+        <td>
+            <button class="btn btn-primary" type="button" id="submit">提交</button>
+			<button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+</body>
+</html>
+<script>
+	var dealAppealId = _get("dealAppealId");
+	var get_url = '/json.php/BackMan/GetDealAppealInfo';
+	var account_url = '/json.php/BackMan/ConfirmDealAppeal';
+    $(function () {       
+		$("#submit").click(function(){
+			if($("#replyMessage").val() == ""){
+				alert("回复内容不能为空");
+				return false;
+			}
+
+			var param = {};
+			param.dealAppealId = dealAppealId;
+			param.message = $("#replyMessage").val() 
+
+			$.post(account_url, param, function(data){
+				if(data.retCode == 0){
+					alert("操作成功");
+					location.href = "index.html";
+				}
+				else {
+					alert("操作失败,"+data.retMessage);
+				}
+			});
+		});
+		$.get(get_url, {dealAppealId: dealAppealId}, function(data){
+			var data = data.data;
+			$("#dealAppealId").val(data.dealAppealId);
+			$("#message").text(data.message);
+			$("#replyMessage").val(data.replyMessage);
+			$("#stateName").text(data.deal.stateName);
+			$("#dealName").text(data.deal.name);
+			$("#price").text(data.deal.price);
+			$("#dealPhoneNumber").text(data.deal.phoneNumber);
+			$("#projectName").text(data.deal.projectName);
+			$("#middleManName").text(data.deal.middleManName);
+			//$("#adviserManName").text(data.deal.adviserManName);
+		});
+    });
+</script>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>后台管理系统</title>
+	<meta charset="UTF-8">
+
+	<script type="text/javascript" src="assets/js/jquery.js?bb381e2d"></script>
+	<script type="text/javascript" src="assets/js/jquery.datetimepicker.js?390e6b3b"></script>
+	<script type="text/javascript" src="assets/js/bootstrap.js?6acc95f5"></script>
+	<!--
+	<script type="text/javascript" src="assets/js/common.js?2767e739"></script>
+	-->
+	<script type="text/javascript" src="assets/js/jquery.colorbox.js?bb279840"></script>
+	<script>
+	$.get("/json.php/BackMan/CheckLogin", {}, function(data){
+		if(data.retCode == 0){
+			location.href = 'index.html';
+		}
+	});
+	</script>
+
+    <style type="text/css">
+        body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .form-signin {
+            max-width: 300px;
+            padding: 19px 29px 29px;
+            margin: 0 auto 20px;
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+        }
+
+        .form-signin .form-signin-heading,
+        .form-signin .checkbox {
+            margin-bottom: 10px;
+        }
+
+        .form-signin input[type="text"],
+        .form-signin input[type="password"] {
+            font-size: 16px;
+            height: auto;
+            margin-bottom: 15px;
+            padding: 7px 9px;
+        }
+    </style>  
+</head>
+<body>
+<div class="container">
+
+    <form class="form-signin" method="post" id="login-form">
+        <h2 class="form-signin-heading">登录系统</h2>
+        <input type="text" name="name" class="input-block-level" placeholder="账号">
+        <input type="password" name="pass" class="input-block-level" placeholder="密码">
+       
+        <p><button id="submit" class="btn btn-large btn-primary" type="button">登录</button></p>
+    </form>
+
+</div>
+<script>
+	$(function(){
+		 $("#submit").click(function(){
+		 	var formData = $('#login-form').serialize(); 
+			$.post("/json.php/BackMan/Login", formData, function(data){
+				if( data.retCode == 0 ){
+					window.location.href="/public/index.html";
+				}
+				else if(data.retCode == 1 && data.retMessage == "你已经登录过了，请勿重复登录"){
+					window.location.href="/public/index.html";
+				}
+				else{
+					alert("输入账号或密码错误:"+data.retMessage);
+				}
+			});
+		 });
+	});
+
+</script>
+</body>
+</html>

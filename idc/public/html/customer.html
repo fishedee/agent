@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+	<title>WanKe</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="Author" content="Awayzhou" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="telephone=no, email=no" name="format-detection">
+	<link href="css/reset.css?42e3bdf8" rel="stylesheet" type="text/css" />
+	<link href="css/global.css?c00f4caf" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div class="search">
+		<div class="search-con"><input type="text" name="" id="" class="txt"></div>
+	</div>
+	<ul class="search-list">
+		<li>
+			<div class="t">
+				<h2>比尔盖茨(18503082346)</h2>
+				<span class="meta">已报备</span>
+			</div>
+			<p>弘雅花园二期</p>
+			<p><span>面积：100平方米</span><span>预算：500万</span></p>
+		</li>
+		<li>
+			<div class="t">
+				<h2>奥巴马(18503082346)</h2>
+				<span class="meta">已报备</span>
+			</div>
+			<p>华盛盛荟公寓</p>
+			<p><span>面积：56平方米</span><span>预算：500万</span></p>
+		</li>
+		<li>
+			<div class="t">
+				<h2>乔布斯(18503082346)</h2>
+				<span class="meta">已报备</span>
+			</div>
+			<p>苹果乐园</p>
+			<p><span>面积：108平方米</span><span>预算：500万</span></p>
+		</li>
+	</ul>
+	<p class="more-info"><a href="">查看更多消息</a></p>
+	<a href="" class="add-customer" title="添加客户"></a>
+	<div class="footer-nav box-flex">
+		<a href="" class="flex"><i class="info"></i>消息</a>
+		<a href="" class="flex"><i class="floor"></i>楼盘</a>
+		<a href="" class="flex curr"><i class="cus"></i>客户</a>
+		<a href="" class="flex"><i class="score"></i>业绩</a>
+	</div>
+	<script src="js/jquery-2.1.1.min.js?e40ec216"></script>
+	<script>
+	$(function(){
+		var obj = $('.search .txt');
+		function clearTxt(){
+			if(obj.val()!=""){
+				obj.addClass("txt-curr");
+			}else{
+				obj.removeClass("txt-curr");
+			}
+		}
+		clearTxt();
+		obj.focus(function(){obj.addClass("txt-curr");});
+		obj.blur(function(){clearTxt();});
+	})
+	</script>
+</body>
+</html>

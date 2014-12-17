@@ -1,0 +1,213 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<meta name="robots" content="none">
+<meta name="format-detection" content="telephone=no">
+<meta name="MobileOptimized" content="320">
+<!--
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, target-densityDpi=device-dpi" />
+-->
+<meta name="viewport" content="width=320,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=319.9,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no" media="(device-height: 568px)">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="style.css?f870c286">
+<script type="text/javascript" charset="utf-8" src="zepto.js"></script>
+<script type="text/javascript" charset="utf-8" src="t.js"></script>
+<script>
+
+/*
+setTimeout(function(){
+var _userId = _get("userId");
+$.get("/json.php/MiddleMan/CheckMustValidUser", {
+	userId: _userId
+}, function(data){
+	var data = JSON.parse(data);
+	if(data.retCode == "10003"){
+		location.href = "reg.html?type=1&userId="+_userId;
+	}
+	else if(data.retCode == "10004"){
+		location.href = "fail.html";
+	}
+	else if(data.retCode == "10005"){
+		location.href = "fail.html?msg=置业顾问无权限访问.";
+	}
+});
+	iosOverlay({
+		text: "操作成功",
+		duration: 2e3,
+		icon: "img/check.png"
+	});
+},1000);
+*/
+</script>
+</head>
+<body onload="load()">
+<!-- 加载与浮层 -->
+<div id="container" style="padding-bottom: 40px">
+	
+	<header>
+		<ul class="gb-nav" style="position:fixed; bottom: 0px;z-index: 9999">
+			<li id="nav-message"><a href="#message">消息</a></li>
+			<li id="nav-project"><a href="#project">楼盘</a></li>
+			<li id="nav-customer"><a href="#customer">客户</a></li>
+			<li id="nav-user"><a href="#user">业绩</a></li>
+		</ul>
+	</header>
+
+	<div class="page" id="page-message">
+		<div class="action flex">
+			<a class="btn active" data="1">我的消息</a>
+			<a class="btn " data="2">系统消息</a>
+		</div>
+		<div id="message-list" class="_feed_list">
+		</div>
+		<p class="refresh-bar">
+			<i class="i-star"></i>查看更多
+		</p>
+	</div>
+
+	<div class="page" id="page-project">
+		<div id="project" >
+			<div id="project-list" class="_feed_list">
+			</div>
+			<!--
+			<p class="refresh-bar" style="margin-bottom: 100px">
+				<i class="i-star"></i>查看更多
+			</p>
+			-->
+		</div>
+	</div>
+
+	<div class="page" id="page-customer">
+		<div class="tweet-wrap" style="">
+			<div class="tweet-box J_tweet_box">
+				<div class="tweet-txt">
+					<input type="text" id="search_phoneNumber" class="txt-area" style="border: 1px solid #ccc" placeHolder="请输入客户手机号码"/>
+				</div>
+				<div style="position: absolute; top: 13px; right: 10px;" >
+					<button id="search" class="btn">搜索</button>
+				</div>
+			</div>
+		</div>
+		<div class="tweet-wrap" style="background: #0044cc">
+			<button class="add_customer">添加客户</button>
+		</div>
+		<!--
+		<div class="tweet-wrap" style="background: #e3e3e3">
+			<div class="action flex">
+				<a class="btn active" >所有楼盘</a>
+				<a class="btn" >所有状态</a>
+				<a class="btn" >全部</a>
+			</div>
+		</div>
+		-->
+		<div id="customer-list" class="_feed_list">
+		</div>
+		<p class="refresh-bar">
+			<i class="i-star"></i>查看更多
+		</p>
+	</div>
+
+	<div class="page" id="page-addcustomer">
+		<div class="sub-nav" style="display: block;">
+			<span class="col-l"><a class="b-bak" href="#customer">返回</a></span>
+			<span class="col-r"><button class="b-act"></button></span>
+			<h2 id="sub_title" class="hd">登记客户</h2>
+		</div>
+		<div id="addcustomer-addpage">
+			<div class="tweet-wrap" style="background-color: #e3e3e3; border: none">
+				<select id="addcustomer-project" style="line-height: 40px; height: 40px" class="add_customer"><option value="NULL">请选择楼盘</option></select>
+				<input id="addcustomer-name" type="text" class="add_customer" placeHolder="客户姓名"/>
+				<input id="addcustomer-phone" type="text" class="add_customer" placeHolder="客户电话"/>
+				<select id="addcustomer-area" style="line-height: 40px; height: 40px" class="add_customer"></select>
+				<select id="addcustomer-budget" style="line-height: 40px; height: 40px" class="add_customer"></select>
+				<!-- <input id="addcustomer-area" type="text" class="add_customer" placeHolder="面积"/>
+				<input id="addcustomer-budget" type="text" class="add_customer" placeHolder="预算"/>
+				-->
+			</div>
+			<div class="tweet-wrap" style="background: #0044cc">
+				<button id="addcustomer-submit" class="add_customer">登记客户</button>
+			</div>
+		</div>
+		<div id="addcustomer-viewpage" style="display:none">
+			<div id="addcustomer-result" class="tweet-wrap" style="padding: 10px;">
+				
+			</div>
+			<div class="tweet-wrap" style="background: #0044cc">
+				<button id="addcustomer-reset" class="add_customer">继续登记</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="page" id="page-detail">
+		<div class="sub-nav" style="display: block;">
+			<span class="col-l"><button id="sub_back" class="b-bak">返回</button></span>
+			<span class="col-r"><button id="sub_opr" class="b-act" style="display:block" ></button></span>
+			<h2 id="sub_title" class="hd">客户详情</h2>
+		</div>
+		<div class="tweet-wrap">
+			<div class="tweet-box J_tweet_box">
+				<div id="detail-name"class="tweet-txt"></div>
+				<span id="detail-project"></span>
+			</div>
+		</div>
+
+		<div class="tweet-wrap" style="padding: 5px 2px; background:#e3e3e3; border: none">
+			<a class="btn" style="height: 30px" id="contact_customer">联系客户</a>&nbsp;
+			<!--<a class="btn" style="height: 30px" id="contact_adviserman">联系置业顾问</a>&nbsp;
+			<!-- <button class="btn">联系现场专员</button> -->
+		</div>
+
+		<div class="tweet-wrap" style="" id="appeal" >
+			<textarea style="display:none" class="text-area"></textarea>
+			<button data="提交" class="btn" style="width: 100%; height: 30px;">申诉</button>
+		</div>
+		<div class="timeline">
+			<div class="timeline-date">
+				<ul id="detail-timeline">
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="page" id="page-user" style="display: none;">
+		<div class="page-wrap" id="page-mine" style="opacity: 1; display: block;">
+			<nav class="profile-nav">
+				<a>报备<em id="report">0</em></a>
+				<a><i class="split-l"></i><i class="split-r"></i>到访<em id="look">0</em></a>
+				<a><i class="split-l"></i><i class="split-r"></i>认购<em id="pledge">0</em></a>
+				<a><i class="split-l"></i><i class="split-r"></i>签约<em id="deal">0</em></a>
+				<a><i class="split-l"></i><i class="split-r"></i>回款<em id="payready">0</em></a>
+			</nav>
+			<div class="profile-apps">
+				<ul class="ui-list">
+					<li >
+						<div class="col-m">
+						已计佣金总额：<em id="requestpay">0</em>
+						</div>
+					</li>
+					<li>
+						<div class="col-m">
+						结算佣金：<em id="havepay">0</em>
+						</div>
+					</li>
+					<li >
+						<div class="col-m">
+						正在付款：<em id="cpaying">0</em>
+						</div>
+					</li>
+					<li>
+						<div class="col-m">
+						已经付款：<em id="chavepay">0</em>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<b class="gotop" id="gotop" style="-webkit-backface-visibility: hidden; display: none;">返回顶部</b>
+</body>
+</html>

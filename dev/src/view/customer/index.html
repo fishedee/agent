@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>客户管理</title>
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js"></script>
+	<script type="text/javascript" src="../../assets/js/common.js"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js"></script>
+</head>
+
+<body class="definewidth m10">
+	<!-- 查询窗口 -->
+	<form id="customer-form" class="form-inline">
+		项目：
+		<input type="text" name="projectName" class="input-small"/>
+		客户姓名：
+		<input type="text" name="name" class="input-small"/>
+		联系电话：
+		<input type="text" name="phoneNumber" class="input-small"/>
+		金牌代理人：<!-- 改成下拉框? -->
+		<input type="text" name="middleManName" class="input-small"/>
+		<!--置业顾问： 改成下拉框? 
+		<input type="text" name="adviserManName" class="input-small"/>
+		-->
+		<button type="submit" class="btn">查询</button>
+		<button type="button" class="btn btn-info" id="excel">导出Excel</button>
+	</form>
+	<!-- 表格 -->
+	<div class="m10">
+		<div id="table"></div>
+	</div>
+	
+	<div>
+	</div>
+	
+	<!-- 表格绑定 common.js-->
+	<script>
+	$(function(){
+		var param = {};
+		param.projectName = _get("projectName");
+		param.name = _get("name");
+		param.phoneNumber = _get("phoneNumber");
+		param.middleManName = _get("middleManName");
+		//param.adviserManName = _get("adviserManName");
+
+		for(var i in param){
+			$("input[name='"+i+"']").val(param[i]);
+		
+			if(param[i] == undefined || param[i] == "undefined"){
+				param[i] = "";
+			}
+		}
+
+		$("#excel").click(function(){
+			location.href = "/json.php/BackMan/GetDealListExcel?projectName="+param.projectName
+				+ "&name=" + param.name + "&phoneNumber=" + param.phoneNumber + "&middleManName=" + param.middleManName ;
+				//+ "&adviserManName=" + param.adviserManName;
+		});
+
+		var fields = {
+			dealId : {
+				thText : '客户id'
+			},
+			projectName : {
+				thText : '项目名称'
+			},
+			area : {
+				thText : '面积'
+			},
+			budget : {
+				thText : '预算'
+			},
+			name : {
+				thText : '客户姓名'
+			},
+			phoneNumber : {
+				thText : '联系电话'
+			},
+			middleManName : {
+				thText : '金牌代理人'
+			},
+			/*
+			adviserManName : {
+				thText : '置业顾问'
+			},
+			*/
+			stateName : {
+				thText : '状态'
+			},
+			createTime : {
+				thText : '登记时间'
+			},
+			modifyTime : {
+				thText : '修改时间'
+			},
+			oper: {
+				thText : '操作'
+			}
+		};
+		var table_url = '/json.php/BackMan/GetDealList';
+		bind_table(table_url, {table_id: 'table', fields: fields, param: param});
+	});
+	</script>
+</body>
+</html>

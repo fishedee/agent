@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>用户管理</title>
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css?08f22560" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css?d2c30d07" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css?42491707" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css?bff4533c" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css?1bfd5da3" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css?22baa8aa" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css?ae3b1bd7" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js?bb381e2d"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js?390e6b3b"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js?6acc95f5"></script>
+	<script type="text/javascript" src="../../assets/js/common.js?2767e739"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js?bb279840"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js?2248ed63"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js?ecec08f5"></script>
+</head>
+
+<body class="definewidth m10">
+	<!-- 查询窗口 -->
+	<form id="user-form" class="form-inline">
+		姓名：
+		<input type="text" name="name" class="input-small"/>
+		<button type="submit" class="btn">查询</button>
+		<a href="view.html" class="btn" style="float:right; margin-right: 20px; margin-top: 5px;">添加消息</a>
+	</form>
+	<!-- 表格 -->
+	<div class="m10">
+		<div id="table"></div>
+	</div>
+	
+	<div>
+	</div>
+	
+	<!-- 表格绑定 common.js?2767e739-->
+	<script>
+	function del_message(){
+		var messageId = $(this).attr("data"); 
+
+		if(confirm("确认删除?")){
+			$.post('/json.php/BackMan/DelMessage', { 
+				messageId: messageId
+			}, function(data){
+				if(data.retCode == 0){
+					alert("操作成功");
+					location.reload();
+				}
+				else {
+					alert("操作失败，" + data.retMessage);
+				}
+			});
+		};
+	}
+
+	$(function(){
+		var param = {};
+		param.name = _get("name");
+
+		for(var i in param){
+			$("input[name='"+i+"']").val(param[i]);
+		}
+		var fields = {
+			messageId : {
+				thText : '消息编号'
+			},
+			userName : {
+				thText : '用户姓名'
+			},
+			typeName : {
+				thText : '消息类型'
+			},
+			message : {
+				thText : '消息内容'
+			},/*
+			stateName : {
+				thText : '消息状态'
+			},*/
+			createTime : {
+				thText : '创建时间'
+			},
+			modifyTime : {
+				thText : '修改时间'
+			},
+			oper: {
+				thText : '操作'
+			}
+		};
+		bind_table('/json.php/BackMan/GetMessageList', {table_id: 'table', fields: fields, param: param}, function(){
+			$(".del").click(del_message);
+		});
+	});
+	</script>
+</body>
+</html>

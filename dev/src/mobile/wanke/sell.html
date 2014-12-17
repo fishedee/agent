@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<head>
+<meta charset="utf-8">
+<meta name="author" content="monicaqin">
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>万科－－让建筑赞美生命</title>
+<link rel="stylesheet" href="css/global.css" />
+</head>
+<body style="overflow: hidden">
+	<div class="mbg">
+    <div class="main-bg atext" id="sellbg">
+		<h1>在售项目</h1>
+		<section class="main-contanier">
+           <ul class="arlist fd" id="project-list">
+		   <!--
+               <li><a href="discription01.html" target="_blank">
+                       <img src="img/s1.jpg" alt="">
+                       <span class="artit">万科·蓝山</span>
+                   </a>
+				  </li>
+               <li><a href="discription04.html" target="_blank">
+                       <img src="img/s2.jpg" alt="">
+                       <span class="artit">长春万科城</span>
+                   </a></li>
+               <li><a href="discription03.html" target="_blank">
+                       <img src="img/s3.jpg" alt="">
+                       <span class="artit">万科·金域长春</span>
+                   </a></li>
+               <li><a href="discription02.html" target="_blank">
+                       <img src="img/s4.jpg" alt="">
+                       <span class="artit">万科·柏翠园</span>
+                   </a></li>
+               <li><a href="discription05.html" target="_blank">
+                       <img src="img/s5.jpg" alt="">
+                       <span class="artit">万科·惠斯勒小镇</span>
+                   </a></li>
+               <li><a href="discription06.html" target="_blank">
+                       <img src="img/s6.jpg" alt="">
+                       <span class="artit">吉林万科城</span>
+                   </a></li>
+			-->
+           </ul>
+		</section>
+	</div>
+	</div>
+<script type="text/javascript" src="/public/mobile/js/zepto.js"></script>	
+<script type="text/javascript" src="js/func.js"></script>	
+<script type="text/javascript" src="/public/mobile/js/util.js"></script>	
+<script>
+var project_template = '<li><a href="%s" target="_blank">'
+                  +'<img src="%s" alt="">'
+				  +'<span class="artit">%s</span>'
+                  +'</a></li>';
+
+var userId = _get('userId');
+
+$.get("/json.php/MiddleMan/GetProjectList", {
+	userId: userId
+}, function(data){
+var data = parse(data);
+	if(data.retCode != 0){
+		alert(data.retMessage);
+			return ;
+	}
+
+	var project = data.data;
+	for(var i in project){
+		var proj = sprintf(project_template, 
+			project[i].infoUrl, 
+			project[i].pictureUrl, 
+			project[i].title 
+		);
+		$("#project-list").append(proj);
+	}
+});
+
+</script>
+</body>
+</html>

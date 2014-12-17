@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+<title>jqGrid.Bootstrap</title>
+
+<!-- jQuery -->
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<!-- <script src="jqGrid/js/jquery-1.9.0.min.js"></script>    -->
+<!-- <script src="jquery-ui/js/jquery-ui-1.9.2.custom.min"></script>  -->
+
+<!-- jqGrid -->
+<script src="jqGrid/js/i18n/grid.locale-en.js"></script>
+<script src="jqGrid/js/jquery.jqGrid.min.js"></script>
+
+<!-- jqGrid setup -->
+<script>
+            
+        $(document).ready(function() {
+        
+        	// Set data
+            var mydata = [
+                {id:"1",invdate:"2010-05-24",name:"test",note:"note",tax:"10.00",total:"2111.00"} ,
+                {id:"2",invdate:"2010-05-25",name:"test2",note:"note2",tax:"20.00",total:"320.00"},
+                {id:"3",invdate:"2007-09-01",name:"test3",note:"note3",tax:"30.00",total:"430.00"},
+                {id:"4",invdate:"2007-10-04",name:"test",note:"note",tax:"10.00",total:"210.00"},
+                {id:"5",invdate:"2007-10-05",name:"test2",note:"note2",tax:"20.00",total:"320.00"},
+                {id:"6",invdate:"2007-09-06",name:"test3",note:"note3",tax:"30.00",total:"430.00"},
+                {id:"7",invdate:"2007-10-04",name:"test",note:"note",tax:"10.00",total:"210.00"},
+                {id:"8",invdate:"2007-10-03",name:"test2",note:"note2",amount:"300.00",tax:"21.00",total:"320.00"},
+                {id:"9",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"11",invdate:"2007-10-01",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"12",invdate:"2007-10-02",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"13",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"14",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"15",invdate:"2007-10-05",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"16",invdate:"2007-09-06",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"17",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"18",invdate:"2007-10-03",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"19",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"21",invdate:"2007-10-01",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"22",invdate:"2007-10-02",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"23",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"24",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"25",invdate:"2007-10-05",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"26",invdate:"2007-09-06",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"},
+                {id:"27",invdate:"2007-10-04",name:"test",note:"note",amount:"200.00",tax:"10.00",total:"210.00"},
+                {id:"28",invdate:"2007-10-03",name:"test2",note:"note2",amount:"300.00",tax:"20.00",total:"320.00"},
+                {id:"29",invdate:"2007-09-01",name:"test3",note:"note3",amount:"400.00",tax:"30.00",total:"430.00"}
+            ];
+
+        	// Setup grid
+            jQuery("#jqGrid01").jqGrid({
+                data: mydata,
+                datatype: "local",
+                height: 200,
+                rowNum: 10,
+                rowList: [10,20,30],
+                colNames:['Inv No','Date', 'Client', 'Amount','Tax','Total','Notes'],
+                colModel:[
+                    {name:'id',index:'id', editable: true, width:60, sorttype:"int",search:true},
+                    {name:'invdate',index:'invdate', editable: true, width:90, sorttype:"date", formatter:"date"},
+                    {name:'name',index:'name', editable: true, width:100},
+                    {name:'amount',index:'amount', editable: true, width:80, align:"right",sorttype:"float", formatter:"number"},
+                    {name:'tax',index:'tax', editable: true, width:80, align:"right",sorttype:"float"},        
+                    {name:'total',index:'total', editable: true, width:80,align:"right",sorttype:"float"},        
+                    {name:'note',index:'note', editable: true, width:100, sortable:false}        
+                ],
+                pager: "#jqGridPager01",
+                viewrecords: true,
+                add: true,
+                edit: true,
+                addtext: 'Add',
+                edittext: 'Edit',
+                caption: "Data",
+                hidegrid:false
+            });
+        	
+        	// Setup buttons
+            jQuery("#jqGrid01").jqGrid('navGrid','#jqGridPager01', 
+            	    {edit:true,add:true,del:true,search:true}, 
+            	    {height:200,reloadAfterSubmit:true}
+            );
+            
+        	// Setup filters
+            jQuery("#jqGrid01").jqGrid('filterToolbar',{defaultSearch:true,stringResult:true});
+            
+        	// Set grid width to #content
+            $("#jqGrid01").jqGrid('setGridWidth', $("#content").width(), true); 
+
+        });
+    </script>
+
+	
+	<!-- jquery-ui CSS -->
+	<link
+		href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"
+		rel="stylesheet">
+	<!-- <link href="jquery-ui/css/custom-theme/jquery-ui-1.8.22.custom.css" rel="stylesheet">  -->
+	
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet"
+		href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<!-- <link href="bootstrap/css/bootstrap.css" rel="stylesheet"> -->
+	
+	<!-- standard jqGrid CSS -->
+	<link href="jqGrid/css/ui.jqgrid.css" rel="stylesheet" />
+	
+	<!-- Custom styles for this template -->
+	<style type="text/css">
+		
+	body {
+		padding-top: 30px;
+		padding-bottom: 40px;
+	}
+	
+	#content {
+		width: 100%; 
+		height: 100%; 
+	}
+	
+	.navbar {
+		margin-bottom: 30px;
+	}
+	
+	.jumbotron {
+		font-size: inheret;
+		font-weight: 200;
+		line-height: 1;
+		color: inherit;
+	}	
+	</style>
+	
+	<!-- custom CCS override -->
+	<link href="jqGrid.bootstrap.css" rel="stylesheet" />
+	
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	      <script src="../../assets/js/html5shiv.js"></script>
+	      <script src="../../assets/js/respond.min.js"></script>
+	    <![endif]-->
+
+</head>
+
+<body>
+
+	<div class="container">
+
+		<!-- Static navbar -->
+		<div class="navbar navbar-default">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Project name</a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Link</a></li>
+					<li><a href="#">Link</a></li>
+					<li><a href="#">Link</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else here</a></li>
+							<li class="divider"></li>
+							<li class="dropdown-header">Nav header</li>
+							<li><a href="#">Separated link</a></li>
+							<li><a href="#">One more separated link</a></li>
+						</ul></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="active"><a href="./">Default</a></li>
+					<li><a href="#">Static top</a></li>
+					<li><a href="#">Fixed top</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+
+		<!-- Main component for a primary marketing message or call to action -->
+		<div class="jumbotron"> 
+			<div class="hero-unit">
+				
+				<div id="content">			
+					<table id="jqGrid01"></table>
+					<div id="jqGridPager01"></div>								
+				</div>				
+				
+				<br/><br/>
+				
+				<form class="form-horizontal" role="form">
+				  <div class="form-group">
+				    <label for="inputEmail1" class="col-lg-2 control-label">Email</label>
+				    <div class="col-lg-10">
+				      <input type="email" width="50" class="form-control" id="inputEmail1" placeholder="Email">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="inputPassword1" class="col-lg-2 control-label">Password</label>
+				    <div class="col-lg-10">
+			      <input type="password" width="50" class="form-control" id="inputPassword1" placeholder="Password">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <div class="col-lg-offset-2 col-lg-10">
+				      <div class="checkbox">
+				        <label>
+				          <input type="checkbox"> Remember me
+				        </label>
+				      </div>
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <div class="col-lg-offset-2 col-lg-10">
+				      <button type="submit" class="btn btn-default">Sign in</button>
+				    </div>
+				  </div>
+				</form>
+				
+			</div>
+			
+		</div>
+
+	</div>
+	<!-- /container -->
+
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script
+		src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

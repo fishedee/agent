@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css?08f22560" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css?d2c30d07" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css?42491707" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css?bff4533c" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css?1bfd5da3" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css?22baa8aa" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css?ae3b1bd7" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js?bb381e2d"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js?390e6b3b"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js?6acc95f5"></script>
+	<script type="text/javascript" src="../../assets/js/common.js?2767e739"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js?bb279840"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js?2248ed63"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js?ecec08f5"></script>
+
+ 
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+<form action="index.html" method="post" class="definewidth m20">
+客户信息
+<table class="table table-bordered table-hover definewidth m10">
+<!--
+    <tr>
+        <td class="tableleft">微信id</td>
+        <td><input type="text" name="wechat_id"/></td>
+    </tr>
+-->
+    <tr>
+        <td width="10%" class="tableleft">客户名称</td>
+        <td><!--<input type="text" name="name"/>--><label id="name"></label></td>
+    </tr>
+    <tr>
+        <td class="tableleft">客户电话</td>
+        <td><!--<input type="text" name="phoneNumber"/>--><label id="phoneNumber"></label></td>
+    </tr>
+    <tr>
+        <td class="tableleft">登记时间</td>
+        <td><p id="createTime"></p></td>
+    </tr>
+    <tr>
+        <td class="tableleft">佣金</td>
+        <td><p id="table_price"></p></td>
+    </tr>
+    <tr>
+        <td class="tableleft">所属项目</td>
+        <td><p id="projectId"></p></td>
+    </tr>
+    <tr>
+        <td class="tableleft">状态</td>
+        <td><p id="state"></p></td>
+    </tr>
+    <tr>
+        <td class="tableleft">预算</td>
+        <td><p id="budget"></p></td>
+    </tr>
+    <tr>
+        <td class="tableleft">面积</td>
+        <td><p id="area"></p></td>
+    </tr>
+    <tr>
+        <td class="tableleft">金牌代理人</td>
+        <td><p id="middleManName"></p></td>
+    </tr>
+	<!--
+    <tr>
+        <td class="tableleft">置业顾问</td>
+        <td><p id="adviserManName"></p></td>
+    </tr>
+	-->
+    <tr>
+        <td class="tableleft"></td>
+        <td>
+            <!-- <button id="save" class="btn btn-primary" type="button">修改信息保存</button> -->
+			<button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+
+<div class="definewidth m20" id='state_info'>
+
+</div> 
+
+<!--
+<form action="index.html" method="post" class="definewidth m20">
+认购签约信息
+<table class="table table-bordered table-hover definewidth m10">
+    <tr>
+        <td class="tableleft">房号</td>
+        <td><input type="text" name="room"/></td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft"></td>
+        <td><select name="projectId"></select><select name="roomId"></select></td>
+    </tr>
+    <tr>
+        <td class="tableleft">认购时间</td>
+        <td><input type="text" name="buyTime"/></td>
+    </tr>
+    <tr>
+        <td class="tableleft">已认筹</td>
+    </tr>
+    <tr>
+        <td class="tableleft"></td>
+        <td>
+            <button id="save" class="btn btn-primary" type="button">修改信息保存</button>
+			<button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+-->
+
+<div class="definewidth m20" id='state_info' style="margin-left: 50px">
+<input type="text" id="price" style='display:none' placeHolder="请输入结佣价格"/>
+<!--
+<select id="adviserMan" style='display:none'></select>
+-->
+<button id="next" class="btn btn-warn" type="button" style="display:none"></button>
+</div> 
+
+
+</body>
+</html>
+<script>
+	var dealId = _get('dealId');
+    $(function () {       
+
+		$("#next").click(function(){
+			var state = $(this).attr("data");
+			var message = '';
+/*
+			if(state == 2)
+				message = $("#adviserMan").val();
+*/
+			if(state == 6){
+				if($("#price").val() == ""){
+					alert("请输入结佣价格");
+					return false;
+				}
+				message = $("#price").val();
+			}
+			if(confirm($(this).text()+"?")){
+				$.post("/json.php/BackMan/ModDealState", {
+					dealId: dealId,
+					state: state,
+					message: message,
+				}, function(data){
+					if(data.retCode == 0)
+						location.href = 'index.html';
+					else 
+						alert(data.retMessage);
+				});
+			}
+		});
+		
+		$("input[name='buyTime'], input[name='signTime']").datetimepicker({
+			yearOffset:0,
+			lang:'ch',
+		});
+
+		if(dealId == null || dealId == ""){
+			alert("请选择具体订单");
+			location.href = 'index.html';
+		}
+
+		var get_url = '/json.php/BackMan/GetDealInfo';
+		$.get(get_url, {dealId: dealId}, function(data){
+			var data = data.data;
+
+			var next_state = data.stateList[parseInt(data.state)];
+			$("#next").text(next_state);
+			$("#next").attr("data", parseInt(data.state) + 1);
+
+			if($("#next").text() != "")
+				$("#next").show();
+
+			$("#name").text(data.name);
+			$("#phoneNumber").text(data.phoneNumber);
+//			$("label[name='name']").text(data.name);
+//			$("label[name='phoneNumber']").text(data.phoneNumber);
+			$("#middleManName").text(data.middleManName);
+			//$("#adviserManName").text(data.adviserManName);
+			$("#state").text(data.stateName);
+			$("#table_price").text(data.price);
+			$("#projectId").text(data.projectName);
+			$("#createTime").text(data.createTime);
+			$("#budget").text(data.budget);
+			$("#area").text(data.area);
+
+			var stateInfo = data.stateInfo;
+			var table = '状态列表<table class="table table-bordered table-hover definewidth m10">';
+			for(var i in stateInfo){
+				if(stateInfo[i].stateName == undefined)
+					continue; 
+				table += '<tr><td class="tableleft">'+
+					stateInfo[i].stateName + ", 修改人: " + stateInfo[i].name +
+					'</td><td><label>' +
+					stateInfo[i].createTime
+					'</label></td></tr>';
+			}
+			table += '</table>';
+			
+			/*
+			if(parseInt(data.state) + 1 == 2){
+				$("#adviserMan").show();
+			}
+			*/
+			if(parseInt(data.state) + 1 == 6){
+				$("#price").show();
+			}
+
+			$("#state_info").html(table);
+		});
+/*
+		var options = "";
+		$.get('/json.php/BackMan/GetAccountList?phoneNumber=&name=&type=2', {}, function(data){
+			var option = data.data;
+			var options = "";
+			for(var i in option){
+				options += ("<option value='"+option[i].userId+"'>"+option[i].name+"</option>");
+			}
+			$("#adviserMan").append(options);
+		});
+*/
+    });
+</script>

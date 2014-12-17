@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap.css?08f22560" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/bootstrap-responsive.css?d2c30d07" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css?9dbb524e" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/module.css?bff4533c" />
+	<link rel="Stylesheet" type="text/css" href="../../assets/css/form.css?1bfd5da3" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/jquery.datetimepicker.css?22baa8aa" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/colorbox.css?ae3b1bd7" />
+	
+	<script type="text/javascript" src="../../assets/js/jquery.js?bb381e2d"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.datetimepicker.js?390e6b3b"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.js?6acc95f5"></script>
+	<script type="text/javascript" src="../../assets/js/common.js?2767e739"></script>
+	<script type="text/javascript" src="../../assets/js/jquery.colorbox.js?bb279840"></script>
+
+	<script type="text/javascript" src="../../assets/js/gri/gri.js?2248ed63"></script>
+	<script type="text/javascript" src="../../assets/js/gri/gri.datatable.js?2bd55024"></script>
+
+ 
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+<form action="index.html" method="post" class="definewidth m20">
+<table class="table table-bordered table-hover definewidth m10">
+    <tr>
+        <td class="tableleft">微信id</td>
+        <td><input name="wechat_id"/></td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">用户名称</td>
+        <td><input type="text" name="username"/></td>
+    </tr>
+    <tr>
+        <td class="tableleft">真实姓名</td>
+        <td><input type="text" name="realname"/></td>
+    </tr>
+    <tr>
+        <td class="tableleft">手机号码</td>
+        <td><input type="text" name="phone"/></td>
+    </tr>
+	<!--
+    <tr>
+        <td class="tableleft">状态</td>
+        <td>
+            <input type="radio" name="status" value="1" checked/> 启用
+           <input type="radio" name="status" value="0"/> 禁用
+        </td>
+    </tr>
+	-->
+    <tr>
+        <td class="tableleft">用户类型</td>
+        <td>
+			<select>
+				<option>金牌代理人</option>
+				<option>置业顾问</option>
+				<option>晚报专员</option>
+				<option>后台工作人员</option>
+			</select>
+		</td>
+    </tr>
+    <tr>
+        <td class="tableleft"></td>
+        <td>
+            <button type="submit" class="btn btn-primary" type="button">保存</button> &nbsp;&nbsp;<button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
+        </td>
+    </tr>
+</table>
+</form>
+</body>
+</html>
+<script>
+    $(function () {       
+		$('#backid').click(function(){
+				window.location.href="index.html";
+		 });
+
+    });
+</script>
